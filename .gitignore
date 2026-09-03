@@ -1,0 +1,10 @@
+*.class
+bin/
+
+# IDE files
+.classpath
+.project
+.settings/
+.vscode/
+.idea/
+*.iml
