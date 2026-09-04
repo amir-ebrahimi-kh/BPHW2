@@ -1,43 +1,60 @@
-# Java Data Structures Exercises
+# Custom Data Structures in Java
 
-This repository contains standalone Java exercises demonstrating custom, array-based implementations of basic data structures. These exercises are written to be clean, simple, and dependency-free.
+This repository contains standalone implementations of fundamental data structures: a List, Map, and Set. Built from scratch using core Java arrays, these exercises explore the internal mechanics of collection types without relying on the Java Collections Framework.
 
-## Included Exercises
+## Implementation Details
 
-- **MyList.java**: An array-based implementation of the `java.util.List` interface, demonstrating dynamic list operations like appending, removing, and indexing elements.
-- **MyMap.java**: An array-based implementation of the `java.util.Map` interface, demonstrating basic key-value pair operations such as putting, getting, and removing values based on unique keys.
-- **MySet.java**: An array-based implementation of the `java.util.Set` interface, demonstrating operations that ensure element uniqueness when adding or removing elements.
+- **MyList**: A sequence mimicking `java.util.List`. It supports sequential access, index-based insertion, and dynamic element removal by shifting elements.
+- **MyMap**: An associative array mimicking `java.util.Map`. It maintains key-value pairs using parallel arrays, providing fundamental mapping operations.
+- **MySet**: A collection mimicking `java.util.Set` that ensures element uniqueness by internally validating elements against existing entries before insertion.
 
-## How to Compile and Run
+## Complexity Analysis
 
-These files can be compiled using standard command-line tools without the need for an IDE or build system (like Maven or Gradle).
+The classes use fixed-size arrays under the hood. As such, they rely heavily on linear scans for search and validation, which dictates their performance characteristics.
+
+| Data Structure | Operation | Best Case | Average Case | Worst Case |
+| -------------- | --------- | --------- | ------------ | ---------- |
+| **MyList**     | Insert    | O(1)      | O(1)         | O(1)*      |
+|                | Search    | O(1)      | O(n)         | O(n)       |
+|                | Delete    | O(1)      | O(n)         | O(n)       |
+| **MyMap**      | Insert    | O(1)      | O(n)         | O(n)       |
+|                | Search    | O(1)      | O(n)         | O(n)       |
+|                | Delete    | O(1)      | O(n)         | O(n)       |
+| **MySet**      | Insert    | O(1)      | O(n)         | O(n)       |
+|                | Search    | O(1)      | O(n)         | O(n)       |
+|                | Delete    | O(1)      | O(n)         | O(n)       |
+
+*\* Note: Appending to the end of `MyList` is O(1). Inserting at a specific index via `add(index, element)` is O(n) due to shifting elements.*
+
+### Memory and Collision Handling
+
+- **Capacity Management**: These implementations allocate fixed-size arrays (capacity of 1000) at initialization. They do not currently implement dynamic resizing (e.g., allocating a larger array and copying elements) when the capacity is exceeded.
+- **Map Mechanics**: Because `MyMap` is implemented as an associative array utilizing a linear scan rather than a true hash table, there are no traditional "hash collisions". Instead, duplicate keys are prevented by executing an O(n) search prior to every insertion; if the key already exists, the associated value is simply overwritten.
+
+## Compilation and Execution
+
+The source files can be compiled directly via the command line without build tools.
 
 1. **Compile the source files:**
-
    ```bash
    javac src/*.java
    ```
 
-   This will generate the compiled `.class` files in the `src/` directory alongside the `.java` source files.
-
-2. **Use the classes:**
-
-   You can write your own `Main.java` file in the root directory to test the implementations:
+2. **Test the structures:**
+   Create a `Main.java` in the root directory to instantiate and test the classes:
 
    ```java
-   // Main.java
    public class Main {
        public static void main(String[] args) {
            MyList list = new MyList();
-           list.add("Hello");
-           list.add("World");
-           System.out.println(list.get(0) + " " + list.get(1));
+           list.add("First");
+           list.add("Second");
+           System.out.println("List element 0: " + list.get(0));
        }
    }
    ```
 
-   Then compile and run your test file alongside the source files:
-
+   Compile and run your test file alongside the source files:
    ```bash
    javac -cp src Main.java
    java -cp src:. Main
